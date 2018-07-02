@@ -23,6 +23,7 @@ require '../src/routes/login.php';
 require '../src/routes/upload.php';
 require '../src/routes/download.php';
 require '../src/routes/delete.php';
+require '../src/routes/users.php';
 
 
 
