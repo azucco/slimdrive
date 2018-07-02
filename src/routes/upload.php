@@ -9,7 +9,9 @@ use \Psr\Http\Message\UploadedFileInterface;
 
 
 // commento github test
-$app->post('/api/upload', function ($request, $response, $args) {
+$app->post('/api/upload/{user}', function ($request, $response, $args) {
+    $owner = $request->getAttribute('user');
+
     $files = $request->getUploadedFiles();
     if (empty($files['newfile'])) {
         throw new Exception('Expected a newfile');
@@ -26,19 +28,20 @@ $app->post('/api/upload', function ($request, $response, $args) {
     
         
         
-        $newfile->moveTo("/var/www/html/slimdrive/src/uploads" . DIRECTORY_SEPARATOR . $filename); 
-        
-        insertFile($uploadedFileName, $filename);
+        //$newfile->moveTo("/var/www/html/slimdrive/src/uploads" . DIRECTORY_SEPARATOR . $filename); 
+        $newfile->moveTo("C:/xampp/htdocs/slimdrive\src/uploads" . DIRECTORY_SEPARATOR . $filename); 
+
+        insertFile($uploadedFileName, $filename, $owner);
 
         echo $uploadedFileName;
     }
 
 });
 
-function insertFile($nome, $path){
+function insertFile($nome, $path, $owner){
 
-    $sql = "INSERT INTO t_files (filename, path) VALUES
-    (:filename, :path) ";
+    $sql = "INSERT INTO t_files (filename, path, owner) VALUES
+    (:filename, :path, :owner) ";
 
     try{
         //Get DB Object
@@ -49,6 +52,7 @@ function insertFile($nome, $path){
 
             $stmt->bindParam(':filename', $nome);
             $stmt->bindParam(':path',  $path);
+            $stmt->bindParam(':owner',  $owner);
 
         $stmt->execute();
         $db = null;

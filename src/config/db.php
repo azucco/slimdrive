@@ -4,7 +4,7 @@ class db{
     //Properties
     private $dbHost = 'localhost';
     private $dbUser = 'root';
-    private $dbPass = 'mysql';
+    private $dbPass = '';
     private $dbName = 'driveapp';
 
     public function connect(){
